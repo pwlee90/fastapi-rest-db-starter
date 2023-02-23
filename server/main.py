@@ -33,6 +33,19 @@ def db_create_user(first_name:str, last_name:str) -> int:
   3. Close the connection to the database
   4. Return the new user's ID (this is stored in the cursor's 'lastrowid' attribute after execution)
   '''
+  #work in lab session 7
+  if(first_name and last_name):
+    db = mysql.connect(host=db_host, database=db_name, user=db_user, passwd=db_pass)
+    cursor = db.cursor()
+
+    query = 'insert into users (fname, lname) VALUES (%s, %s)'
+    values = (first_name, last_name)
+    # Executes multiple queries immediately. See description below for more info
+    cursor.execute(query, values)
+
+    # Make sure data is committed to the database
+    db.commit()
+    print(cursor.rowcount, " rows inserted.")
   return 0
 
 # SELECT SQL query
@@ -44,6 +57,37 @@ def db_select_users(user_id:int=None) -> list:
   4. Close the connection to the database
   5. Return the retrieved record(s)
   '''
+  #work in lab session 7
+  #data validation
+  if(user_id):
+      db = mysql.connect(host=db_host, database=db_name, user=db_user, passwd=db_pass)
+      cursor = db.cursor()
+      # get item_id from Menu_Items
+      ####This is the part that MYSQL does not work
+      ### also ask how to call put method after get method
+      query = "SELECT fname, lastname FROM Menu_Items WHERE item = %s"
+      values = (user_id,)
+      cursor.execute(query,values)
+      data = cursor.fetchall()
+      db.close()
+      if(data):
+        return data
+  else:
+     # connect to the database
+    db = mysql.connect(host=db_host, database=db_name, user=db_user, passwd=db_pass)
+   
+    # preparing a cursor object
+    cursor = db.cursor()
+
+    # print Ideas table
+    cursor.execute("select item, price from Menu_Items;")
+   
+    # fetch the remaining rows
+    data = cursor.fetchall()
+
+    # disconnecting from server
+    db.close()
+    return data
   return []
 
 # UPDATE SQL query
@@ -55,6 +99,21 @@ def db_update_user(user_id:int, first_name:str, last_name:str) -> bool:
   4. Return True if a row in the database was successfully updated and False otherwise (you can
      check how many records were affected by looking at the cursor's 'rowcount' attribute)
   '''
+  #work in lab session 7
+  #data validation
+  if(user_id and first_name and last_name):
+    db = mysql.connect(host=db_host, database=db_name, user=db_user, passwd=db_pass)
+    cursor = db.cursor()
+      
+    #update menu
+    query = 'UPDATE users SET fname = %s, lname = %s WHERE id = %s'
+    values = (first_name, last_name, user_id)
+    # Executes multiple queries immediately. See description below for more info
+    cursor.execute(query, values)
+
+    # Make sure data is committed to the database
+    db.commit()
+    print(cursor.rowcount, " rows modified.")
   return False
 
 # DELETE SQL query
@@ -66,6 +125,19 @@ def db_delete_user(user_id:int) -> bool:
   4. Return True if a row in the database was successfully deleted and False otherwise (you can
      check how many records were affected by looking at the cursor's 'rowcount' attribute)
   '''
+  #work in lab session 7
+  if(user_id):
+      db = mysql.connect(host=db_host, database=db_name, user=db_user, passwd=db_pass)
+      cursor = db.cursor()
+
+      query = 'DELETE FROM Menu_Items WHERE id = %s'
+      values = [(user_id)]
+      # Executes multiple queries immediately. See description below for more info
+      cursor.execute(query, values)
+
+      # Make sure data is committed to the database
+      db.commit()
+      return True
   return False
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''

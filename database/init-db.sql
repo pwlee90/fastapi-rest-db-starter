@@ -7,8 +7,12 @@ drop table if exists users;
 
 -- 1. Create the users table
 create table if not exists users (
-  -- [INSERT CODE HERE]
+  id          integer  AUTO_INCREMENT PRIMARY KEY,
+  fname        VARCHAR(100) NOT NULL,   
+  lname       integer NOT NULL
 );
 
 -- 2. Insert initial seed records into the table
--- [INSERT CODE HERE]
+insert into users (fname, lname) 
+values ('Tom', 'Cruise'),
+        ('Steven', 'Milvelle');
