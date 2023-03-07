@@ -161,7 +161,11 @@ def get_users() -> dict:
     'id', 'first_name', and 'last_name'
   3. Return this collection as a JSON object, where the key is 'users' and the value is the list
   '''
-  return {'users': []}
+  responseList = db_select_users()
+  response = {}
+  for i in range (len(responseList)):
+    response[i] = {'id:': responseList[0],'first name': responseList[1],'last name': responseList[2]}
+  return {users:response}
 
 # GET /users/{user_id}
 # Used to query a single user
@@ -173,7 +177,8 @@ def get_user(user_id:int) -> dict:
   3. Otherwise, format the result as JSON where the keys are: 'id', 'first_name', and 'last_name'
   4. Return this object
   '''
-  return {}
+  record = [5,'first','last']
+  return {'id': record[0], 'first_name': record[1], 'last_name': record[2]}
 
 # POST /users
 # Used to create a new user
